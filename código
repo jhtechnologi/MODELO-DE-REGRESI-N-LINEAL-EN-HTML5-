@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Regresión Lineal en HTML5</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        input[type="number"] {
+            padding: 10px;
+            width: 100px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Modelo Simple de Regresión Lineal</h1>
+    <p>Introduce un valor para predecir el resultado basado en el modelo entrenado:</p>
+    <input type="number" id="input-value" placeholder="Introduce un número">
+    <button onclick="predict()">Predecir</button>
+    <h2>Resultado: <span id="output"></span></h2>
+
+    <script>
+        // Inicializar los parámetros del modelo (pendiente y bias)
+        let m = 0.5;  // Pendiente (slope)
+        let b = 2;    // Intercepto (bias)
+
+        // Datos de entrenamiento (x, y)
+        const trainingData = [
+            {x: 1, y: 2},
+            {x: 2, y: 3},
+            {x: 3, y: 4},
+            {x: 4, y: 5},
+            {x: 5, y: 6}
+        ];
+
+        // Función para entrenar el modelo usando el algoritmo de descenso de gradiente
+        function trainModel(epochs, learningRate) {
+            for (let epoch = 0; epoch < epochs; epoch++) {
+                let totalError = 0;
+                
+                // Para cada dato de entrenamiento
+                trainingData.forEach(point => {
+                    let x = point.x;
+                    let y = point.y;
+
+                    // Predicción del modelo
+                    let predictedY = m * x + b;
+
+                    // Error (diferencia entre predicción y realidad)
+                    let error = predictedY - y;
+
+                    // Actualizar los parámetros (m y b) usando descenso de gradiente
+                    m = m - learningRate * error * x;
+                    b = b - learningRate * error;
+
+                    totalError += error ** 2;
+                });
+
+                // Mostrar el error en cada epoch
+                if (epoch % 100 === 0) {
+                    console.log(Epoch ${epoch}: Error total = ${totalError});
+                }
+            }
+        }
+
+        // Entrenar el modelo con 1000 epochs y un learning rate de 0.01
+        trainModel(1000, 0.01);
+
+        // Función para predecir un valor basado en el modelo entrenado
+        function predict() {
+            let inputValue = document.getElementById('input-value').value;
+            let predictedValue = m * inputValue + b;
+            document.getElementById('output').textContent = predictedValue.toFixed(2);
+        }
+    </script>
+</body>
+</html>
