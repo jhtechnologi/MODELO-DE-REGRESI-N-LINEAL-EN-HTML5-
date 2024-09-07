@@ -75,7 +75,7 @@
         }
 
         // Entrenar el modelo con 1000 epochs y un learning rate de 0.01
-        trainModel(1000, 0.01);
+        trainModel(10000, 0.01);
 
         // Función para predecir un valor basado en el modelo entrenado
         function predict() {
